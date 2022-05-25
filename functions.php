@@ -25,10 +25,6 @@
 
     function filterArray($key)
     {
-        // returns whether the input integer is odd
-       /*  echo "<pre>";
-        echo $key;
-        echo "</pre>"; */
         if ( str_contains($key, 'print-pos') )
         {
             return true;

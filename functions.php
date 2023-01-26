@@ -5,16 +5,20 @@
     {
         
         if ( is_page('test-quote-form-page') ) {
-            wp_enqueue_script('quote-scripts-js', '/wp-content/themes/storefront-child/quote-scripts.js', array( 'jquery' ), '1.0', true );
+            wp_enqueue_script('quote-scripts-js', '/wp-content/themes/generatepress_child/quote-scripts.js', array( 'jquery' ), '1.0', true );
             
             $quote_nonce = wp_create_nonce( 'quote_nonce' );
+            $garment_type_nonce = wp_create_nonce( 'garment_type_nonce' );
+            
             
             wp_localize_script(
                 'quote-scripts-js',
                 'my_sec_obj',
                 array(
                     'admin_url' => admin_url( 'admin-post.php' ),
+                    'ajax_url'    => admin_url( 'admin-ajax.php' ),
                     'nonce'    => $quote_nonce,
+                    'garment_type_nonce' => $garment_type_nonce
                 )
             );
         } 
@@ -23,8 +27,26 @@
     add_action( 'admin_post_nopriv_process_quote', 'prefix_process_quote');
     add_action( 'admin_post_process_quote', 'prefix_process_quote');
 
+    add_filter( 'the_content', 'ftmv_content_filter', 99);
+ 
+    function ftmv_content_filter( $content ) {
+            if ( is_page('test-quote-form-page') ) {
+                $the_form = file_get_contents(get_stylesheet_directory_uri() . '/the-form.php');
+                //echo $asubHTML;
+                return $the_form;
+            } 
+            else {
+               return $content;			
+            }
+            
+    }
+
     function filterArray($key)
     {
+        // returns whether the input integer is odd
+       /*  echo "<pre>";
+        echo $key;
+        echo "</pre>"; */
         if ( str_contains($key, 'print-pos') )
         {
             return true;
@@ -239,3 +261,207 @@
         
 
     }
+
+    function get_colours_per_print()
+    {   
+        $cpps = array();
+        $colours_per_print_info = array();
+
+        // Get colours per print by category type.
+        $args = array(
+            'category' => array( 'cpp' ),
+        );
+
+        $products = wc_get_products( $args );
+        
+        foreach ($products as $product) 
+        {
+
+            $cpps = [];
+            $colours_per_print_info = [];
+
+            $cpp_variations = $product->get_available_variations();            
+            foreach ($cpp_variations as $cpp_variation) 
+            {
+                
+                if ( !in_array($cpp_variation['attributes']['attribute_pa_number-of-colours'], $cpps ) ) 
+                {
+                    array_push($cpps, $cpp_variation['attributes']['attribute_pa_number-of-colours']);
+                    array_push($colours_per_print_info, array("cpp" => $cpp_variation['attributes']['attribute_pa_number-of-colours'], "price" => $cpp_variation['display_regular_price']));
+                }  
+            }
+        }   
+        
+        return $colours_per_print_info;
+    }
+
+    function get_extras()
+    {   
+        $extras = array();
+        $extras_info = array();
+
+        // Get colours per print by category type.
+        $args = array(
+            'category' => array( 'extras' ),
+        );
+
+        $products = wc_get_products( $args );
+        
+        // error_log(print_r($products, true));
+        
+        
+        foreach ($products as $product) 
+        {
+
+            $extras = [];
+            $extras_info = [];
+
+            $extras_variations = $product->get_available_variations();            
+
+            // error_log(print_r($extras_variations, true));
+            
+            foreach ($extras_variations as $extras_variation) 
+            {
+                // error_log(print_r($extras_variation, true));
+                
+                /* error_log($extras_variation['attributes']['attribute_pa_extras']);
+                error_log($extras_variation['display_regular_price']); */
+                
+
+                if ( !in_array($extras_variation['attributes']['pa_extras'], $extras ) ) 
+                {
+                    array_push($extras, $extras_variation['attributes']['attribute_pa_extras']);
+                    array_push($extras_info, array("extra" => $extras_variation['attributes']['attribute_pa_extras'], "price" => $extras_variation['display_regular_price']));
+                } 
+            } 
+        }  
+        
+        
+        return $extras_info;
+    }
+
+
+
+    function get_products_by_garment_type($garment_type) 
+    {
+        
+        // Get garments of category type.
+        $args = array(
+            'category' => array( $garment_type ),
+        );
+        $products = wc_get_products( $args );
+
+        $garment_colours = array();
+        $chosen_garments = array();
+        $colours = array();
+        $colour_info = array();
+        
+        $sizes = array();
+        $size_price_info = array();
+
+        foreach ($products as $product) 
+        {
+
+            $garments_variations = $product->get_available_variations();
+            
+            $colours = [];
+            $colour_info = [];
+
+            $sizes = [];
+            $size_price_info = [];
+
+            foreach ($garments_variations as $garment_variations) 
+            {
+                // error_log(print_r($garment_variations, true));
+              /*   error_log($garment_variations['attributes']['attribute_pa_color']);
+                error_log($garment_variations['attributes']['attribute_pa_size']);
+                error_log($garment_variations['display_regular_price']); */
+                
+                
+                // error_log($garment_variations['attributes']['attribute_pa_size']);
+                
+                // in_array("100", $marks)
+
+                if ( !in_array($garment_variations['attributes']['attribute_pa_color'], $colours ) ) 
+                {
+                    //error_log('this color '. $garment_variations['attributes']['attribute_pa_color'] .' is not in the array, add it');
+                    array_push($colours, $garment_variations['attributes']['attribute_pa_color']);
+                    
+                    array_push($colour_info, array("colour" => $garment_variations['attributes']['attribute_pa_color'], "colour_url" => $garment_variations['image']['full_src']));
+
+                    // array_push($size_price_info, array("size" => $garment_variations['attributes']['attribute_pa_size'], "price" => $garment_variations['display_regular_price']));
+
+                }  
+
+                if ( !in_array($garment_variations['attributes']['attribute_pa_size'], $sizes ) ) 
+                {
+                    array_push($sizes, $garment_variations['attributes']['attribute_pa_size']);
+                    array_push($size_price_info, array("size" => $garment_variations['attributes']['attribute_pa_size'], "price" => $garment_variations['display_regular_price']));
+                    //error_log('this color '. $garment_variations['attributes']['attribute_pa_color'] .' is not in the array, add it');
+                    
+                    
+                    
+                    
+                    // error_log($garment_variations['attributes']['attribute_pa_size']);
+                    // array_push($colour_info, array("colour" => $garment_variations['attributes']['attribute_pa_color'], "colour_url" => $garment_variations['image']['full_src']));
+
+                }                  
+            } 
+
+            // error_log(print_r($size_price_info, true));
+
+            $product_id = $product->get_id();
+            $product_name = $product->get_name();
+            $imageId = $product->get_image_id();
+            $product_medium_img_url = wp_get_attachment_image_src( $imageId, 'medium' )[0];
+            $product_large_img_url = wp_get_attachment_image_src( $imageId, 'large' )[0];
+
+            $product_min_price = $product->get_variation_regular_price('min', true);
+            $product_max_price = $product->get_variation_regular_price('max', true);
+
+            
+            array_push($chosen_garments, array("product_name" => $product_name, "product_id" => $product_id, "product_medium_img_url" => $product_medium_img_url, "product_large_img_url" => $product_large_img_url, "colour_info" => $colour_info, "min_price" => $product_min_price, "max_price" => $product_max_price, "size_price_info" => $size_price_info));
+            // array_push($chosen_garments, array("product_id" => $product_id, "product_medium_img_url" => $product_medium_img_url, "product_large_img_url" => $product_large_img_url));
+            
+        } 
+
+        /* error_log(print_r($colours, true));
+        error_log(print_r($colour_url, true));
+         */
+        // error_log(print_r($colour_info, true));
+        
+        $colours_per_print_info = get_colours_per_print();
+        $extras = get_extras();
+
+        array_push($chosen_garments, $colours_per_print_info, $extras);
+
+        return $chosen_garments;
+        
+        
+    }
+
+    add_action( 'wp_ajax_nopriv_get_garment_type', 'get_garments_of_type');
+    add_action( 'wp_ajax_get_garment_type', 'get_garments_of_type');
+
+    function get_garments_of_type()
+    {
+        /* error_log('the garments of type function was called');
+        error_log(print_r( $_POST, true )); */
+
+        if (wp_verify_nonce($_POST['garment_type_nonce'], 'garment_type_nonce')) {
+            // echo 'Nonce verified successfully'; 
+            $garment_type = $_POST['garment_choice'];
+            $chosen_garments = get_products_by_garment_type($garment_type);            
+            echo json_encode($chosen_garments);            
+            wp_die();
+
+        } else {
+            // echo 'nonce verification failed'; 
+            exit;
+        }
+    }
+
+
+   
+
+

@@ -238,67 +238,71 @@
     <div class="product-chosen-container size-choice">        
         <div class="item-amount-choice-container">
             <div class="item-amount-container">
-                <div class="item-amount-choice-label-container">
-                    <div class="item-amount-label-container">
-                        <p class="item-amount-label-text">
-                            XS
-                        </p>
-                    </div>    
-                    <div class="item-amount-input-container">
-                        <input class="item-amount-input" type="number" name="xs" data-price min="0" role="presentation" autocomplete="false">
+                <div class="col-fifty">
+                    <div class="item-amount-choice-label-container">
+                        <div class="item-amount-label-container">
+                            <p class="item-amount-label-text">
+                                XS
+                            </p>
+                        </div>    
+                        <div class="item-amount-input-container">
+                            <input class="item-amount-input" type="number" name="xs" data-price min="0" role="presentation" autocomplete="false">
+                        </div>
+                    </div>
+                    <div class="item-amount-choice-label-container">
+                        <div class="item-amount-label-container">
+                            <p class="item-amount-label-text">
+                                S
+                            </p>
+                        </div>    
+                        <div class="item-amount-input-container">
+                            <input class="item-amount-input" type="number" name="s" data-price min="0" role="presentation" autocomplete="false">
+                        </div>
+                    </div>
+                    <div class="item-amount-choice-label-container">
+                        <div class="item-amount-label-container">
+                            <p class="item-amount-label-text">
+                                M
+                            </p>
+                        </div>    
+                        <div class="item-amount-input-container">
+                            <input class="item-amount-input" type="number" name="m" data-price min="0" role="presentation" autocomplete="false">
+                        </div>
                     </div>
                 </div>
-                <div class="item-amount-choice-label-container">
-                    <div class="item-amount-label-container">
-                        <p class="item-amount-label-text">
-                            S
-                        </p>
-                    </div>    
-                    <div class="item-amount-input-container">
-                        <input class="item-amount-input" type="number" name="s" data-price min="0" role="presentation" autocomplete="false">
+
+                <div class="col-fifty">
+                    <div class="item-amount-choice-label-container">
+                        <div class="item-amount-label-container">
+                            <p class="item-amount-label-text">
+                                L
+                            </p>
+                        </div>    
+                        <div class="item-amount-input-container">
+                            <input class="item-amount-input" type="number" name="l" data-price min="0" role="presentation" autocomplete="false">
+                        </div>
+                    </div>
+                    <div class="item-amount-choice-label-container">
+                        <div class="item-amount-label-container">
+                            <p class="item-amount-label-text">
+                                XL
+                            </p>
+                        </div>    
+                        <div class="item-amount-input-container">
+                            <input class="item-amount-input" type="number" name="xl" data-price min="0" role="presentation" autocomplete="false">
+                        </div>
+                    </div>
+                    <div class="item-amount-choice-label-container">
+                        <div class="item-amount-label-container">
+                            <p class="item-amount-label-text">
+                                XXL
+                            </p>
+                        </div>    
+                        <div class="item-amount-input-container">
+                            <input class="item-amount-input" type="number" name="xxl" data-price min="0" role="presentation" autocomplete="false">
+                        </div>
                     </div>
                 </div>
-                <div class="item-amount-choice-label-container">
-                    <div class="item-amount-label-container">
-                        <p class="item-amount-label-text">
-                            M
-                        </p>
-                    </div>    
-                    <div class="item-amount-input-container">
-                        <input class="item-amount-input" type="number" name="m" data-price min="0" role="presentation" autocomplete="false">
-                    </div>
-                </div>
-                <div class="item-amount-choice-label-container">
-                    <div class="item-amount-label-container">
-                        <p class="item-amount-label-text">
-                            L
-                        </p>
-                    </div>    
-                    <div class="item-amount-input-container">
-                        <input class="item-amount-input" type="number" name="l" data-price min="0" role="presentation" autocomplete="false">
-                    </div>
-                </div>
-                <div class="item-amount-choice-label-container">
-                    <div class="item-amount-label-container">
-                        <p class="item-amount-label-text">
-                            XL
-                        </p>
-                    </div>    
-                    <div class="item-amount-input-container">
-                        <input class="item-amount-input" type="number" name="xl" data-price min="0" role="presentation" autocomplete="false">
-                    </div>
-                </div>
-                <div class="item-amount-choice-label-container">
-                    <div class="item-amount-label-container">
-                        <p class="item-amount-label-text">
-                            XXL
-                        </p>
-                    </div>    
-                    <div class="item-amount-input-container">
-                        <input class="item-amount-input" type="number" name="xxl" data-price min="0" role="presentation" autocomplete="false">
-                    </div>
-                </div>
-                
             </div>            
         </div>
                

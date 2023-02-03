@@ -84,8 +84,8 @@
     let currentIndex = 0;
     
     let contents = [garmentChoice, /* clientDetails,*/ productType, colourPicker, printPositionPicker, colourAmountPicker, amountPicker, extrasPicker, orderOverview];
-    let max = contents.length;
-    let min = 0;
+    let sectionMax = contents.length;
+    let sectionMin = 0;
     
 
     /*
@@ -852,15 +852,17 @@
     {
         let size = Object.keys(garmentData).length;                
         let count = 0;
-        let productImageDivContainer = document.querySelector('.product-types-container');
+        // let productImageDivContainer = document.querySelector('.product-types-container');
+        let slideContainer = document.querySelector('.product-types-container').querySelector('.slide-container');
         let productHTMLObject = '';
         garmentData.forEach(garment => {
             let productId = "product-" + garment['product_id'];            
-            productHTMLObject = '<div class="product-type-container border-hover" id="'+ productId +'" data-id="'+ garment['product_id'] +'" ><div class="choice-type-container"><p class="product-type-text">'+ garment['product_name'] +'</p></div></div>';
-            productImageDivContainer.insertAdjacentHTML('beforeend', productHTMLObject);
+            productHTMLObject = '<div class="slide"><div class="product-type-container border-hover" id="'+ productId +'" data-id="'+ garment['product_id'] +'" ><div class="choice-type-container"><p class="product-type-text">'+ garment['product_name'] +'</p></div></div></div>';
+            slideContainer.insertAdjacentHTML('beforeend', productHTMLObject);
             document.querySelector('#'+productId).style.backgroundImage = "url('"+ garment.product_large_img_url +"')";
             document.querySelector('#'+productId).addEventListener('click', handleGarmentClick)
         });
+        setTimeout(loadCarousel, 100);
 
     }
 
@@ -957,7 +959,7 @@
         let currentPage = getIndex();        
         let nextPage = 0
         nextPage = currentPage + 1;        
-        if ( nextPage < max)
+        if ( nextPage < sectionMax)
         {
             goToPage(nextPage);
             sendMessageToIframe(nextPage);
@@ -976,7 +978,7 @@
         let currentPage = getIndex();        
         let nextPage = 0
         nextPage = currentPage -1;
-        if ( nextPage > min)
+        if ( nextPage > sectionMin)
         {
             goToPage(nextPage);
             sendMessageToIframe(nextPage);
@@ -1012,5 +1014,125 @@
             previous();
         })        
     });
+
+    /* Garment Carousel Logic */
+
+    function loadCarousel()
+    {
+        console.log('loadCarousel called');
+        let activeIndex = 0;
+        let slides = document.querySelectorAll('.slide');
+        let max = slides.length - 1;
+        let min = 0;
+        let leftSlideIndex = 0;
+        let rightSlideIndex = 0;
+
+        /* window.addEventListener('load', () => {
+            
+            slides[0].classList.add('active-slide');
+            slides[1].classList.add('right-slide');    
+            slides[max].classList.add('left-slide');
+
+            for (let i = 2; i < max; i++)
+            {
+                slides[i].classList.add('right-slide');
+            }
+        }) */
+
+        slides[0].classList.add('active-slide');
+        slides[1].classList.add('right-slide');    
+        slides[max].classList.add('left-slide');
+
+        for (let i = 2; i < max; i++)
+        {
+            slides[i].classList.add('right-slide');
+        }
+
+        document.querySelector('.left-nav').addEventListener('click', function(){
+
+            if (activeIndex - 1 < min)
+            {
+                activeIndex = max;
+            }
+            else
+            {
+                activeIndex -= 1;
+            }
+
+            if (activeIndex - 1 < min)
+            {
+                leftSlideIndex = max;
+            }
+            else 
+            {
+                leftSlideIndex = activeIndex - 1;
+            }
+            
+            if (activeIndex + 1 > max)
+            {
+                rightSlideIndex = min;
+            }
+            else 
+            {
+                rightSlideIndex = activeIndex + 1;
+            }
+
+            slides[rightSlideIndex].classList.add('right-slide');
+            slides[rightSlideIndex].classList.remove('active-slide');
+
+            slides[activeIndex].classList.add('active-slide');
+            slides[activeIndex].classList.remove('left-slide');
+
+            slides[leftSlideIndex].classList.add('left-slide');
+            slides[leftSlideIndex].classList.remove('right-slide');
+
+            
+
+            
+        })
+
+        document.querySelector('.right-nav').addEventListener('click', function(){            
+
+            if (activeIndex + 1 > max)
+            {
+                activeIndex = 0;
+            }
+            else
+            {
+                activeIndex += 1;
+            }
+            
+            if ( activeIndex - 1 < min) 
+            {
+                leftSlideIndex = max;
+            }
+            else
+            {
+                leftSlideIndex = activeIndex - 1;
+            }
+
+            if ( activeIndex + 1 > max) 
+            {
+                rightSlideIndex = min;
+            }
+            else
+            {
+                rightSlideIndex = activeIndex + 1;
+            }
+            
+
+            slides[leftSlideIndex].classList.remove('active-slide');
+            slides[leftSlideIndex].classList.add('left-slide');
+
+            slides[activeIndex].classList.add('active-slide');
+            slides[activeIndex].classList.remove('right-slide');
+
+            slides[rightSlideIndex].classList.add('right-slide');
+            slides[rightSlideIndex].classList.remove('left-slide');
+        
+        })
+    }
+
+     
    
   }());

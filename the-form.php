@@ -84,8 +84,39 @@
             Garments
         </p>
     </div>
+    <!-- <div class="product-types-container">
+    </div> -->
     <div class="product-types-container">
+        
+       
+    <div class="slider-container">
+        <div class="nav-pane left-nav-pane">
+            <div class="nav-button-container">                            
+                <i class="arrow left-nav"></i>
+            </div>
+        </div>
+
+        <div class="slide-container">
+        </div>
+
+        <div class="nav-pane right-nav-pane">
+            <div class="nav-button-container">
+                <i class="arrow right-nav"></i>
+            </div>
+        </div>
     </div>
+        
+        
+      
+
+    </div>
+    <!-- ---------------------------------------------------- -->
+
+    
+
+
+
+    <!-- ---------------------------------------------------- -->
     <div class="nav-btn-container">        
         <button type="button" class="nav-btn next">Next</button>
     </div>

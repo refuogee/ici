@@ -946,10 +946,15 @@
     function sendMessageToIframe(section)
     {
         switch(section) {
-            case 1:                
-                console.log('user has gone to first page using send message function again');
+            case 1:                                
                 window.top.postMessage('first-message', '*');
                 break;            
+            case 2:                                
+                window.top.postMessage('second-message', '*');
+                break;            
+            case 3:                                
+                window.top.postMessage('third-message', '*');
+                break;                        
           }
         
     }

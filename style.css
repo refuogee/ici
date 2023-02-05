@@ -6,6 +6,15 @@
     display: none;
 } */
 
+html::-webkit-scrollbar {
+    -webkit-appearance: none;    
+    background-color: rgba(0,0,0,.12);
+    border: 6px solid transparent;
+    border-radius: 9px;
+    background-clip: content-box;
+}
+
+
 html {
     font-size: 16px;
 }
